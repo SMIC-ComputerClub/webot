@@ -1,6 +1,8 @@
 const { Wechaty } = require('wechaty') 
 const qrcode = require('qrcode-terminal')
 
+var todo = []
+
 function sleep(ms) 
 {
     return new Promise(resolve => setTimeout(resolve, ms))
@@ -38,7 +40,7 @@ Wechaty.instance() // Singleton
       const loginUrl = url.replace(/\/qrcode\//, '/l/')
       qrcode.generate(loginUrl)
     }
-    console.log(`${url}\n[${code}] Scan the QR Code above to login:`)
+    console.log(`${url}\n[${code}] Scan the QR Code above to log in:`)
   })
 .on('login', user => console.log(`User ${user} logged in`))
 .on('message', message => console.log(`Message: ${message}`))
@@ -49,5 +51,39 @@ Wechaty.instance() // Singleton
   {
     remindme(message)
   }
+
+  if(msgcontent.toLowerCase().startsWith('add'))
+  {
+    msgconent = msgcontent.toLowerCase()
+    var item = msgcontent.replace('add ', '')
+    todo.push(item)
+    message.room().say('Item added!')
+  }
+
+  if(msgcontent.toLowerCase().startsWith('remove'))
+  {
+    msgconent = msgcontent.toLowerCase()
+    var index = parseInt(msgcontent.replace('remove ', ''))-1
+    console.log(index)
+    todo.splice(index,1)
+    message.room().say('Item removed!')
+  }
+
+  if(msgcontent.toLowerCase().startsWith('list'))
+  {
+    if(todo.length==0)
+    {
+      message.room().say('You have nothing in your list!')
+    }
+    else
+    {
+      var listmsg = ''
+      for(i=0;i<todo.length;i++)
+      {
+        listmsg+=`${i+1}. ${todo[i]}\n`
+      }
+    message.room().say(listmsg)
+  }
+}
 })
 .init()
