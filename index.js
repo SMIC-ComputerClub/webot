@@ -1,4 +1,3 @@
-let data = require('./list.json')
 let userData = []
 
 const {
