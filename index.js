@@ -67,6 +67,7 @@ Wechaty.instance() // Singleton
             console.log('exists')
             data[i].push(item)
             message.room().say('Item added!')
+            break
           }
           else
           {
@@ -103,13 +104,21 @@ Wechaty.instance() // Singleton
     if (msgcontent.toLowerCase().startsWith('list')) {
       if (data.length == 0) {
         message.room().say('You have nothing in your list!')
-      } else {
+      } 
+      else {
         let listmsg = ''
         for (let i = 0; i < data.length; i++) {
-          for(let z = 0; z< data[z].length-1; z++)
-          listmsg += `${z+1}. ${data[i][z+1]}\n`
+          if(data[i].length == 1)
+          {
+            message.room().say('You have nothing in your list!')
+          }
+          else if(data[i]==message.from().name())
+          {
+            for(let z = 0; z< data[z].length-1; z++)
+            listmsg += `${z+1}. ${data[i][z+1]}\n`
+            message.room().say(listmsg)
+          }
         }
-        message.room().say(listmsg)
       }
     }
   })
