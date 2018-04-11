@@ -27,9 +27,9 @@ async function remindme(msg) {
 
   console.log(hours + mins + secs)
 
-  msg.room().say(`Noted!`)
+  msg.say(`Noted!`)
   await sleep(total)
-  msg.room().say(`TIME\'S UP! Here is the message you left for yourself:${final}`)
+  msg.say(`TIME\'S UP! Here is the message you left for yourself:${final}`)
 }
 
 Wechaty.instance() // Singleton
@@ -55,7 +55,7 @@ Wechaty.instance() // Singleton
       if(data.length == 0)
       {
         data.push(userData)
-        message.room().say('Item added!')
+        message.say('Item added!')
       }
       else
       {
@@ -67,14 +67,14 @@ Wechaty.instance() // Singleton
             console.log('list exists')
             data[i].push(item)
             counter++
-            message.room().say('Item added!')
+            message.say('Item added!')
             break
           }
         }
         if(counter == 0)
         {
           data.push(userData)
-          message.room().say(`Item added!`)
+          message.say(`Item added!`)
         }
       }
       console.log(data)
@@ -84,7 +84,7 @@ Wechaty.instance() // Singleton
       let index = parseInt(msgcontent.replace('remove ', ''))
       if(data.length == 0)
       {
-        message.room().say('There is nothing to remove!')
+        message.say('There is nothing to remove!')
       }
 
       let counter = 0
@@ -94,34 +94,34 @@ Wechaty.instance() // Singleton
 
         if (data[i].length==1)
         {
-          message.room().say('You have nothing in your list to remove!')
+          message.say('You have nothing in your list to remove!')
           break
         }
         else if((data[i][0] == message.from().name()))
         {
           data[i].splice(index, 1)
           counter++
-          message.room().say(`Successfully removed!`)
+          message.say(`Successfully removed!`)
           break
         }        
       }
       if(counter == 0)
       {
-        message.room().say('Incorrect usage of the remove command')
+        message.say('Incorrect usage of the remove command')
       }
       console.log(data)
     }
 
     if (msgcontent.toLowerCase().startsWith('list')) {
       if (data.length == 0) {
-        message.room().say('You have nothing in your list!')
+        message.say('You have nothing in your list!')
       }
       
       for(let i = 0; i<data.length; i++)
       {
         if(data[i].length ==1)
         {
-          message.room().say('You have nothing in your list!')
+          message.say('You have nothing in your list!')
         }
         else if(data[i][0] == message.from().name())
         {
@@ -130,7 +130,7 @@ Wechaty.instance() // Singleton
           {
             listmsg += `${z}. ${data[i][z]}\n`
           }
-          message.room().say(listmsg)
+          message.say(listmsg)
         }
       }
     }
