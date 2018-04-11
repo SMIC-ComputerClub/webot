@@ -41,7 +41,7 @@ Wechaty.instance() // Singleton
     console.log(`${url}\n[${code}] Scan the QR Code above to log in:`)
   })
   .on('login', user => console.log(`User ${user} logged in`))
-  .on('message', message => console.log(`Message: ${message}`))
+  .on('message', message => console.log(`${message.from().name()}: ${message.content()}`))
   .on('message', message => {
     var msgcontent = message.content()
 
@@ -50,7 +50,6 @@ Wechaty.instance() // Singleton
     }
 
     if (msgcontent.toLowerCase().startsWith('add')) {
-      msgcontent = msgcontent.toLowerCase()
       let item = msgcontent.replace('add ', '')
       let userData = [message.from().name(), item]
       if(data.length == 0)
@@ -60,45 +59,54 @@ Wechaty.instance() // Singleton
       }
       else
       {
+        let counter = 0
         for(let i=0; i<data.length; i++)
         {
           if(data[i][0] == message.from().name())
           {
-            console.log('exists')
+            console.log('list exists')
             data[i].push(item)
+            counter++
             message.room().say('Item added!')
             break
           }
-          else
-          {
-            data.push(userData)
-            message.room().say('Item added!')
-          }
+        }
+        if(counter == 0)
+        {
+          data.push(userData)
+          message.room().say(`Item added!`)
         }
       }
       console.log(data)
     }
 
     if (msgcontent.toLowerCase().startsWith('remove')) {
-      msgcontent = msgcontent.toLowerCase()
       let index = parseInt(msgcontent.replace('remove ', '')) - 1
-      console.log(index)
+      if(data.length == 0)
+      {
+        message.room().say('There is nothing to remove!')
+      }
       for(let i=0; i<data.length; i++)  
       {
-        if (data.length==0)
+        let counter = 0
+        if (data[i].length==1)
         {
           message.room().say('You have nothing in your list to remove!')
+          break
         }
-        else if (data[i].length==1)
+        else if((data[i][0] == message.from().name()))
         {
-          message.room().say('You have nothing in your list to remove!')
-        }
-        else
-        {
-          data.splice(index, 1)
+          data[i].splice(index, 1)
+          counter++
           message.room().say('Item removed!')
+          break
         }
+        // if(counter == 0)
+        // {
+        //   message.room().say('')
+        // }
       }
+      console.log(data)
     }
 
     if (msgcontent.toLowerCase().startsWith('list')) {
