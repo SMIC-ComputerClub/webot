@@ -1,11 +1,7 @@
-let userData = []
+let data = []
 
-const {
-  Wechaty
-} = require('wechaty')
+const { Wechaty } = require('wechaty')
 const qrcode = require('qrcode-terminal')
-
-var todo = []
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -54,27 +50,64 @@ Wechaty.instance() // Singleton
     }
 
     if (msgcontent.toLowerCase().startsWith('add')) {
-      msgconent = msgcontent.toLowerCase()
-      var item = msgcontent.replace('add ', '')
-      todo.push(item)
-      message.room().say('Item added!')
+      msgcontent = msgcontent.toLowerCase()
+      let item = msgcontent.replace('add ', '')
+      let userData = [message.from().name(), item]
+      if(data.length == 0)
+      {
+        data.push(userData)
+        message.room().say('Item added!')
+      }
+      else
+      {
+        for(let i=0; i<data.length; i++)
+        {
+          if(data[i][0] == message.from().name())
+          {
+            console.log('exists')
+            data[i].push(item)
+            message.room().say('Item added!')
+          }
+          else
+          {
+            data.push(userData)
+            message.room().say('Item added!')
+          }
+        }
+      }
+      console.log(data)
     }
 
     if (msgcontent.toLowerCase().startsWith('remove')) {
-      msgconent = msgcontent.toLowerCase()
-      var index = parseInt(msgcontent.replace('remove ', '')) - 1
+      msgcontent = msgcontent.toLowerCase()
+      let index = parseInt(msgcontent.replace('remove ', '')) - 1
       console.log(index)
-      todo.splice(index, 1)
-      message.room().say('Item removed!')
+      for(let i=0; i<data.length; i++)  
+      {
+        if (data.length==0)
+        {
+          message.room().say('You have nothing in your list to remove!')
+        }
+        else if (data[i].length==1)
+        {
+          message.room().say('You have nothing in your list to remove!')
+        }
+        else
+        {
+          data.splice(index, 1)
+          message.room().say('Item removed!')
+        }
+      }
     }
 
     if (msgcontent.toLowerCase().startsWith('list')) {
-      if (todo.length == 0) {
+      if (data.length == 0) {
         message.room().say('You have nothing in your list!')
       } else {
-        var listmsg = ''
-        for (i = 0; i < todo.length; i++) {
-          listmsg += `${i+1}. ${todo[i]}\n`
+        let listmsg = ''
+        for (let i = 0; i < data.length; i++) {
+          for(let z = 0; z< data[z].length-1; z++)
+          listmsg += `${z+1}. ${data[i][z+1]}\n`
         }
         message.room().say(listmsg)
       }
