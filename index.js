@@ -81,14 +81,17 @@ Wechaty.instance() // Singleton
     }
 
     if (msgcontent.toLowerCase().startsWith('remove')) {
-      let index = parseInt(msgcontent.replace('remove ', '')) - 1
+      let index = parseInt(msgcontent.replace('remove ', ''))
       if(data.length == 0)
       {
         message.room().say('There is nothing to remove!')
       }
+
+      let counter = 0
+
       for(let i=0; i<data.length; i++)  
       {
-        let counter = 0
+
         if (data[i].length==1)
         {
           message.room().say('You have nothing in your list to remove!')
@@ -98,13 +101,13 @@ Wechaty.instance() // Singleton
         {
           data[i].splice(index, 1)
           counter++
-          message.room().say('Item removed!')
+          message.room().say(`Successfully removed!`)
           break
-        }
-        // if(counter == 0)
-        // {
-        //   message.room().say('')
-        // }
+        }        
+      }
+      if(counter == 0)
+      {
+        message.room().say('Incorrect usage of the remove command')
       }
       console.log(data)
     }
@@ -112,20 +115,22 @@ Wechaty.instance() // Singleton
     if (msgcontent.toLowerCase().startsWith('list')) {
       if (data.length == 0) {
         message.room().say('You have nothing in your list!')
-      } 
-      else {
-        let listmsg = ''
-        for (let i = 0; i < data.length; i++) {
-          if(data[i].length == 1)
+      }
+      
+      for(let i = 0; i<data.length; i++)
+      {
+        if(data[i].length ==1)
+        {
+          message.room().say('You have nothing in your list!')
+        }
+        else if(data[i][0] == message.from().name())
+        {
+          let listmsg = ''
+          for(let z = 1; z<data[i].length; z++)
           {
-            message.room().say('You have nothing in your list!')
+            listmsg += `${z}. ${data[i][z]}\n`
           }
-          else if(data[i]==message.from().name())
-          {
-            for(let z = 0; z< data[z].length-1; z++)
-            listmsg += `${z+1}. ${data[i][z+1]}\n`
-            message.room().say(listmsg)
-          }
+          message.room().say(listmsg)
         }
       }
     }
