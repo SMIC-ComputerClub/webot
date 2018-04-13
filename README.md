@@ -5,13 +5,13 @@ This app should theoretically work on any platform as long as Node.js is install
 >node --version
 to check your node version
 
-1. Clone the repository somewhere
-2. 
+Clone the repository somewhere
+
 > npm install
 
 This will install all the dependencies you need
 
-3. 
+
 >node index.js
 
 After this a QR code will appear on your terminal, scan it with your phone
