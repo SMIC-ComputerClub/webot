@@ -17,7 +17,7 @@ This will install all the dependencies you need
 After this a QR code will appear on your terminal, scan it with your phone
 
 # Commands
-add <item> (example: add pg 13 #15~18). This will add whatever you put into x into your own list. For the example provided it'll add "pg 13 #15~18" to your list
+add <item> (example: add pg 13 #15-18). This will add whatever you put into x into your own list. For the example provided it'll add "pg 13 #15-18" to your list
 
 remove <number> (example: remove 2). This will remove the second item in your list, the list is designed in a non-array fashion so it starts at 1, not 0.
 
