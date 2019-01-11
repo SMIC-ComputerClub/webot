@@ -28,3 +28,5 @@ remindme XXhXXmXXs <message> (example: remindme 00h10m00s monkaS). This will sen
 # License
 no license whatsoever, you're free to do whatever you wish.
 
+# project discontinued
+fuck wechat, i will no longer be developing this project
